@@ -1,0 +1,14 @@
+// Client.
+hash = hash(userId, token)
+// Creates a digest with RSA private key to build an authentic signed message.
+signature = signMessage(hash)
+verify(userId, token, signature) // Call contract function.
+
+// Contract.
+verify (userId, token, signature) {
+  hash = hash(userId, token) // Duplicate of the hash made on the client.
+  digest = toEthSignedMessageHash(hash) // Creates a signed message digest.
+  // Returns the address of the signer from the client’s signed message.
+  addr = recover(digest, signature) 
+  if (!isRoleMinter(addr)) throw new Error()
+}
